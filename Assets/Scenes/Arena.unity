@@ -1066,7 +1066,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   heroSpawner: {fileID: 152349182}
-  enemySpawner: {fileID: 0}
+  enemySpawner: {fileID: 897214222}
   heroObject: {fileID: 7277401342536528545, guid: 690c592434021d0499f11c6ccb41c64c, type: 3}
 --- !u!4 &1883444403
 Transform:
