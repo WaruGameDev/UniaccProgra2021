@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class QuestionManager : MonoBehaviour
 {
@@ -14,7 +15,9 @@ public class QuestionManager : MonoBehaviour
     public CanvasGroup panelFeedback;
     public TextMeshProUGUI feedbackText;
     public int correctas, incorrectas;
-    public int index;
+    public int indexPreguntas;
+    public int maxPreguntas = 1;
+    //public int index;
 
     private void Awake()
     {
@@ -22,7 +25,7 @@ public class QuestionManager : MonoBehaviour
     }
     // Start is called before the first frame update
     void Start()
-    {
+    {        
         panelFeedback.alpha = 0;
         panelFeedback.blocksRaycasts = false;
         panelFeedback.interactable = false;
@@ -31,24 +34,43 @@ public class QuestionManager : MonoBehaviour
 
     public void LoadQuestion()
     {
-        pregunta.text = preguntaACargar[index].pregunta;
+        int preguntaRandom = Random.Range(0, preguntaACargar.Count);
+        pregunta.text = preguntaACargar[preguntaRandom].pregunta;
         for (int i = 0; i < respuestas.Length; i++)
         {
-            respuestas[i].text = preguntaACargar[index].respuestas[i];
+            respuestas[i].text = preguntaACargar[preguntaRandom].respuestas[i];
         }
-        respuestas_botones[preguntaACargar[index].respuestaCorrectaIndex].isCorrect = true;
+        respuestas_botones[preguntaACargar[preguntaRandom].respuestaCorrectaIndex].isCorrect = true;
+        preguntaACargar.RemoveAt(preguntaRandom);
     }
     public void NextQuestion()
     {
-        index++;
-        if(index >= preguntaACargar.Count)
-        {
-            Feedback();
-        }
-        else
+        indexPreguntas++;
+        if(indexPreguntas < maxPreguntas)
         {
             LoadQuestion();
         }
+        else
+        {
+            Feedback();
+        }
+        //if(preguntaACargar.Count > 0)
+        //{
+        //    LoadQuestion();
+        //}
+        //else
+        //{
+        //    Feedback();
+        //}
+        //index++;
+        //if(index >= preguntaACargar.Count)
+        //{
+        //    Feedback();
+        //}
+        //else
+        //{
+        //    LoadQuestion();
+        //}
         
     }
     public void Feedback()
@@ -57,5 +79,9 @@ public class QuestionManager : MonoBehaviour
         panelFeedback.blocksRaycasts = true;
         panelFeedback.interactable = true;
         feedbackText.text = "Correctas: " + correctas + "\n" + "Incorrectas: " + incorrectas;
+    }
+    public void RestartScene()
+    {
+        SceneManager.LoadScene("Quiz");
     }
 }
